@@ -12,15 +12,25 @@ from math import pi
 import numba as nb
 import twobody_tools
 import setting
-
+from units import Consts
 
 
 @nb.jit(nopython=setting.NOPYTHON)
 def tidal_capture_efficiency_factor2(polytropic_index=None, zeta=None):
+	"""
+	Compute the tidal energy factor2 using a fifth-order polynomial fit
+
+	Parameters:
+	polytropic_index (float): polytropic index of the star
+	zeta (float): zeta value for the star
+
+	Returns:
+	float: tidal energy factor2
+	"""
 
 	c = np.zeros(6)
 	eff_2 = 0.0
-	
+
 	if(polytropic_index==1.5):
 		c[0] =-0.397
 		c[1] = 1.678
@@ -45,14 +55,14 @@ def tidal_capture_efficiency_factor2(polytropic_index=None, zeta=None):
 	else:
 		print("Incorrect polytropic index:", polytropic_index)
 		#raise Exception("Incorrect polytropic index:", polytropic_index)
-	
 
-    # the tidal energy factor computed using fifth-order polynomial fit.
+
+	# the tidal energy factor computed using fifth-order polynomial fit.
 	x = np.log10(zeta)
 
 	eff_2 = ( ( ( (c[5]*x + c[4])*x + c[3])*x + c[2])*x + c[1])*x + c[0]
 
-	
+
 	try:
 		if eff_2 > 20:
 			print("WARNING eff_3 IS TOO LARGE", eff_2)
@@ -64,44 +74,53 @@ def tidal_capture_efficiency_factor2(polytropic_index=None, zeta=None):
 
 @nb.jit(nopython=setting.NOPYTHON)
 def tidal_capture_efficiency_factor3(polytropic_index=None, zeta=None):
-	
-		c = np.zeros(6)
-		eff_3 = 0.0
+	"""
+	Compute the tidal energy factor3 using a fifth-order polynomial fit
 
-		if(polytropic_index==1.5):
-			c[0] =-0.909
-			c[1] = 1.574
-			c[2] = 12.37
-			c[3] =-57.40
-			c[4] = 80.10
-			c[5] =-46.43
-		elif(polytropic_index==2.0):
-			c[0] =-1.040
-			c[1] =-1.354
-			c[2] = 37.64
-			c[3] =-139.9
-			c[4] = 168.2
-			c[5] =-66.53
-		elif(polytropic_index==3.0):
-			c[0] =-1.703
-			c[1] = 2.653
-			c[2] =-14.34
-			c[3] = 12.85
-			c[4] =-0.492
-			c[5] =-3.600
-		else:
-			print("Incorrect polytropic index:", polytropic_index)
-			#raise Exception("Incorrect polytropic index:", polytropic_index)
+	Parameters:
+	polytropic_index (float): polytropic index of the star
+	zeta (float): zeta value for the star
 
-#		the tidal energy factor computed using fifth-order polynomial fit.
-		x = np.log10(zeta)
+	Returns:
+	float: tidal energy factor3
+	"""	
+	c = np.zeros(6)
+	eff_3 = 0.0
 
-		eff_3 = ( ( ( (c[5]*x + c[4])*x + c[3])*x + c[2])*x + c[1])*x + c[0]
-			
-		if eff_3 > 20:
-			print("WARNING eff_3 IS TOO LARGE", eff_3)
-	
-		return 10.0**eff_3
+	if(polytropic_index==1.5):
+		c[0] =-0.909
+		c[1] = 1.574
+		c[2] = 12.37
+		c[3] =-57.40
+		c[4] = 80.10
+		c[5] =-46.43
+	elif(polytropic_index==2.0):
+		c[0] =-1.040
+		c[1] =-1.354
+		c[2] = 37.64
+		c[3] =-139.9
+		c[4] = 168.2
+		c[5] =-66.53
+	elif(polytropic_index==3.0):
+		c[0] =-1.703
+		c[1] = 2.653
+		c[2] =-14.34
+		c[3] = 12.85
+		c[4] =-0.492
+		c[5] =-3.600
+	else:
+		print("Incorrect polytropic index:", polytropic_index)
+		#raise Exception("Incorrect polytropic index:", polytropic_index)
+
+	#		the tidal energy factor computed using fifth-order polynomial fit.
+	x = np.log10(zeta)
+
+	eff_3 = ( ( ( (c[5]*x + c[4])*x + c[3])*x + c[2])*x + c[1])*x + c[0]
+		
+	if eff_3 > 20:
+		print("WARNING eff_3 IS TOO LARGE", eff_3)
+
+	return 10.0**eff_3
 
 
 @nb.jit(nopython=setting.NOPYTHON)
@@ -122,8 +141,9 @@ def Zeta(eta=None, ecc=None):
 
 @nb.jit(nopython=setting.NOPYTHON) 
 def tidal_energy_loss(peri=None, ecc=None, m=None, radius=None, kw=None, 
-					  m_perturber=None, G=0.00430125637339471887):
+					  m_perturber=None):
   
+
 	Mb	   = m + m_perturber
 	
 	# No tidal oscilations for BHs
@@ -154,7 +174,8 @@ def tidal_energy_loss(peri=None, ecc=None, m=None, radius=None, kw=None,
 
 	R2	= (radius/peri)**2
 	R6	= R2*R2*R2 * (Mb - m)**2 / radius
-	
+
+	G = Consts.G	
 	dE2 = G * R6 * psi2			   # l = 2
 	dE3 = G * R6 * psi3 * R2	   # l = 3
 	dE	= dE2 + dE3
