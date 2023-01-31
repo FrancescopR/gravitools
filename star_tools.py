@@ -4,55 +4,82 @@ import double3
 import numpy as np
 
 class Star(object):
+    """
+    Class to represent a star.
+    """
     def __init__(self, mass, kw, radius, ID=None):
-        self.id   = ID
-        self.m    = mass
-        self.r    = radius
+        """
+        Initialize the Star object with mass, type, radius and ID.
+
+        :param mass: float, mass of the star in Msun
+        :param kw: int, type of the star
+        :param radius: float, radius of the star in Rsun
+        :param ID: int, identifier of the star, defaults to None
+        """
+        self.id = ID
+        self.m = mass
+        self.r = radius
         self.type = kw
-        self.pos  = double3.Double3()
-        self.vel  = double3.Double3()
-        self.acc  = double3.Double3()
+        self.pos = double3.Double3()
+        self.vel = double3.Double3()
+        self.acc = double3.Double3()
 
     @classmethod
     def MainSequence(cls, *, mass=None, ID=None, z=None):
-        radius = rzamsf_Tout1996(mass, z) # Warning this work only if the mass is in Msun 
-        if(mass<0.7):
+        """
+        Class method to create a main sequence star.
+
+        :param mass: float, mass of the star in Msun, defaults to None
+        :param ID: int, identifier of the star, defaults to None
+        :param z: float, metallicity, defaults to None
+        :return: Star object
+        """
+        radius = rzamsf_Tout1996(mass, z)  # Warning this work only if the mass is in Msun
+        if mass < 0.7:
             kw = 0
-        elif(mass>=0.7):
-            kw=1
+        elif mass >= 0.7:
+            kw = 1
         return cls(mass, kw, radius, ID)
 
     @classmethod
     def BlackHole(cls, *, mass=None, ID=None):
-        G       = Consts.G
+        """
+        Class method to create a black hole.
+
+        :param mass: float, mass of the black hole in Msun, defaults to None
+        :param ID: int, identifier of the star, defaults to None
+        :return: Star object
+        """
+        G = Consts.G
         c_light = Consts.c_light
-        R_sun   = Consts.R_sun
+        R_sun = Consts.R_sun
 
         kw = 14
-        radius = 2 * G * mass / c_light**2 
+        radius = 2 * G * mass / c_light**2
         return cls(mass, kw, radius, ID)
 
     def update_pos_vel(self, x, y, z, vx, vy, vz):
+        """
+        Update position and velocity vectors of the star.
+
+        :param x: float, x position of the star
+        :param y: float, y position of the star
+        :param z: float, z position of the star
+        :param vx: float, x velocity of the star
+        :param vy: float, y velocity of the star
+        :param vz: float, z velocity of the star
+        """
         self.pos.set_values(x=x, y=y, z=z)
         self.vel.set_values(x=vx, y=vy, z=vz)
 
     def __repr__(self):
-        string1 = 'id={0} type={1} mass={2:.3e} radius={3:.3e}\n'.format(self.id, self.type, self.m, self.r) 
-        string2 = 'pos = {}\n'.format(self.pos)
-        string3 = 'vel = {}\n'.format(self.vel)
-        return string1 + string2 + string3
+        """
+        String representation of the star object.
+        """
+        string1 = 'id={0} type={1} mass={2:.3e} radius={3:.3e}\n'.format(
+            self.id, self.type, self.m, self.r)
 
-    def as_string(self):
-        ID = self.id
-        m  = self.m
-        r  = self.r
-        kw = self.type
-        pos_str = self.pos.as_string()
-        vel_str = self.vel.as_string()
 
-        return f"{ID} {m:16e} {r:16e} " + pos_str + " " + pos_str + f" {kw}"
-
-        
 
 
 

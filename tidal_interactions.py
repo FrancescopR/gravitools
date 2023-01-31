@@ -142,10 +142,23 @@ def Zeta(eta=None, ecc=None):
 @nb.jit(nopython=setting.NOPYTHON) 
 def tidal_energy_loss(peri=None, ecc=None, m=None, radius=None, kw=None, 
 					  m_perturber=None):
-  
+	"""
+	Calculates tidal energy loss.
+
+	Parameters:
+	peri (float): Periapsis of orbit.
+	ecc (float): Eccentricity of orbit.
+	m (float): Mass of body.
+	radius (float): Radius of body.
+	kw (int): Polytropic index of body.
+	m_perturber (float): Mass of perturbing body.
+
+	Returns:
+	dE (float): Tidal energy loss.
+	"""  
 
 	Mb	   = m + m_perturber
-	
+
 	# No tidal oscilations for BHs
 	if kw == 14:
 		dE = 0.0
@@ -158,12 +171,12 @@ def tidal_energy_loss(peri=None, ecc=None, m=None, radius=None, kw=None,
 		polytropic_index = 1.5
 	else:
 		polytropic_index = 3.0
-	
+
 	eta = (peri/radius)**1.5 * (m/Mb)**0.5	 
 
 	# Mardling 2001
 	zeta = Zeta(eta=eta, ecc=ecc)
-	
+
 	if zeta < 1.0:
 		# note zeta cannot be lt 1.0: the fitting fnction are valid for zeta>1.0
 		print("WARNING IN TIDAL INTERACTION zeta < 1.0, zeta", zeta)
@@ -179,24 +192,41 @@ def tidal_energy_loss(peri=None, ecc=None, m=None, radius=None, kw=None,
 	dE2 = G * R6 * psi2			   # l = 2
 	dE3 = G * R6 * psi3 * R2	   # l = 3
 	dE	= dE2 + dE3
-	
+
 	return dE
 
 
 
 @nb.jit(nopython=setting.NOPYTHON)
-def drag_force_coefficient(m1, m2, R1, kw1, dr, dv, G=0.00430125637339471887):
+def drag_force_coefficient(m1, m2, R1, kw1, dr, dv):
+	"""
+	Calculate the drag force coefficient based on the masses, radii, and relative velocity and position of two celestial bodies.
 
-    Mtot = m1 + m2    
+	Parameters:
+		m1 (float): Mass of the first celestial body.
+		m2 (float): Mass of the second celestial body.
+		R1 (float): Radius of the first celestial body.
+		kw1 (float): Love number of the first celestial body.
+		dr (float): Relative position vector between the two celestial bodies.
+		dv (float): Relative velocity vector between the two celestial bodies.
 
-    ecc, a, peri, d = twobody_tools.ecc_semi_peri_distance(Mtot, dr, dv)    
+	Returns:
+		float: The drag force coefficient.
 
-    f = 0.5 * pi * (2.0 + 7.0 * ecc**2 + ecc**4 )
+	"""
 
-    dE = tidal_energy_loss(peri, ecc, m=m1, radius=R1, kw=kw1, m_perturber=m2)
-    C  = 0.5 * dE * ( peri * (1+ecc) )**3.5 / (Mtot*G)**0.5 / f
-	
-    return C
+	G = Consts.G
+
+	Mtot = m1 + m2    
+
+	ecc, a, peri, d = twobody_tools.ecc_semi_peri_distance(Mtot, dr, dv)    
+
+	f = 0.5 * pi * (2.0 + 7.0 * ecc**2 + ecc**4 )
+
+	dE = tidal_energy_loss(peri, ecc, m=m1, radius=R1, kw=kw1, m_perturber=m2)
+	C  = 0.5 * dE * ( peri * (1+ecc) )**3.5 / (Mtot*G)**0.5 / f
+
+	return C
 
 
 
