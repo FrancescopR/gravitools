@@ -1,6 +1,6 @@
 
 from units import Consts
-import double3
+import double3 as double3
 import numpy as np
 
 class Star(object):

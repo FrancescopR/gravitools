@@ -1,11 +1,18 @@
 
 # %%
-# 4) Add documentation
-# 5) Wrap the modules in a single package 
+# 3) Wrap the modules in a single package 
+#  - pip install in anaconda env 
+#  -
+# 4) Add tests
 
 from units import choose_units, MSTAR, Astronomical, Standard
 choose_units(Astronomical)
 
+# %%
+import pytest
+
+
+# %%
 import twobody_tools 
 from star_tools import Star
 

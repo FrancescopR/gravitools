@@ -1,3 +1,10 @@
+Editable install from local folder
+
+pip install -e .
+
+
+
+
 This Package is a simple example to illustrate how to create a python package.
 (see https://medium.com/analytics-vidhya/how-to-create-a-python-library-7d5aea80cc3f )
 
