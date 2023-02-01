@@ -18,17 +18,25 @@ Clone the repository:
 Install the required packages:
 
 
-> pip install -r requirements.txt
+> pip install -e .
 
 
 # Usage
-Run the training script: python train.py
-Run the testing script: python test.py
-Run the bid optimizer: python optimizer.py -m models/model.h5 -d data/test.csv -o output.csv
+Usage example on how to compute core radius/density centre of a simulated star cluster:
+
+```Python
+import gravitools.starcluster_tools as sct
+
+Rho, Xc, Vc        = density_center(pos, vel, mass)
+rc, Mc, Rho_c, n_c = sct.core_radius_mass_density(R, M, Rho)
+```
+
+
+
 
 # Data
 
-The data used in this project is a simulated dataset of online advertising bids. It includes features such as bid amount, ad type, and audience demographics. The data is split into a training set and a testing set.
+
 
 # Authors
 
