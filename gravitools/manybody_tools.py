@@ -1,8 +1,8 @@
 import numba as nb
 import numpy as np
-from units import Consts
-import twobody_tools
-import setting
+from gravitools.units import Consts
+from gravitools import twobody_tools
+from gravitools import setting
 
 #nb.set_num_threads(nb.config.NUMBA_NUM_THREADS)
 nb.set_num_threads(setting.NUM_THREADS)

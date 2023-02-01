@@ -8,9 +8,8 @@ Created on Wed Aug 20 11:17:28 2020
 import numpy as np
 import numba as nb
 import math
-from units import Consts
 from scipy.spatial.ckdtree	import cKDTree	
-
+from gravitools.units import Consts
 
 # %% ########## ANALYTICAL DENSITY PROFILES ##########
 

@@ -1,7 +1,7 @@
 
-from units import Consts
-import double3 as double3
 import numpy as np
+from gravitools.units import Consts
+import gravitools.double3 as double3
 
 class Star(object):
     """
@@ -107,8 +107,6 @@ def angular_momentum(star):
 def kinetic_energy(star):
 	T = 0.5 * star.m * double3.scalar_product(star.vel,  star.vel)
 	return T 
-
-
 
 
 

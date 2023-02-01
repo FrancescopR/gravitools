@@ -8,9 +8,9 @@ Created on Wed Aug 20 12:37:11 2021
 import numpy as np
 import pandas as pd
 import numba as nb
-from units import Consts
 from math import pi, fabs
-import setting
+from gravitools.units import Consts
+from gravitools import setting
 
 ####################### ORBITAL ELEMENTS ########################
 

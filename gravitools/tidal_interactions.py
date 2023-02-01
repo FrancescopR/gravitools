@@ -10,9 +10,9 @@ Created on Wed Aug 26 13:47:58 2020
 import numpy as np
 from math import pi
 import numba as nb
-import twobody_tools
-import setting
-from units import Consts
+from gravitools import twobody_tools
+from gravitools import setting
+from gravitools.units import Consts
 
 
 @nb.jit(nopython=setting.NOPYTHON)
