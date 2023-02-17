@@ -208,8 +208,6 @@ def dispersion_velocity_profile(R, Vx, Vy, Vz, step=1000):
         d_c = np.append(d_c, R[i:i+step].values.mean())		  
 		
     return d_c, Sig
-
- 
  
  
 def mass_and_particle_density(R, M, step = 1000):

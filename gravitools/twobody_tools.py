@@ -8,6 +8,7 @@ Created on Wed Aug 20 12:37:11 2021
 import numpy as np
 import pandas as pd
 import numba as nb
+from scipy import linalg
 from math import pi, fabs
 from gravitools.units import Consts
 from gravitools import setting
@@ -336,7 +337,7 @@ def keplerian_trajectories(m1, m2, peri, ecc, theta):
 	Tuple of two pandas DataFrames, representing the position and velocity of the two stars at each time.
 	"""
 
-	t, x, y, Vx, Vy = keplerian_trajectory(Mtot=m1+m2, peri=0.01, ecc=0.4, theta=theta)
+	t, x, y, Vx, Vy = keplerian_trajectory(Mtot=m1+m2, peri=peri, ecc=ecc, theta=theta)
 
 	ID   = np.full(t.size, 0)
 	mass = np.full(t.size, m1)
@@ -386,5 +387,29 @@ def put_2stars_in_orbit(s1,s2, ecc, peri, theta=0.0):
     s2.update_pos_vel(x,y,z,vx,vy,vz)
 
 
-    
+############################# ROTATION ###################################
+
+def RotationMatrix(axis, theta):
+    """
+    Returns the 3D rotation matrix around the given axis by the given angle.
+
+    Parameters:
+    -----------
+    axis: 1D array-like
+        The rotation axis represented as a 3D vector.
+    theta: float
+        The rotation angle in radians.
+
+    Returns:
+    --------
+    rotation_matrix: 2D numpy array
+        The 3x3 rotation matrix.
+
+    """
+    axis = axis/linalg.norm(axis) # normalize input axis
+    I    = np.eye(3) # 3D identityt matrix
+    Arg  = np.cross(I, theta * axis) # the rotation matrix around "axis"
+    rotation_matrix = linalg.expm(Arg) # matrix exponential
+    return rotation_matrix
+
     
