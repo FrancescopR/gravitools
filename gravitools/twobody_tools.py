@@ -412,4 +412,28 @@ def RotationMatrix(axis, theta):
     rotation_matrix = linalg.expm(Arg) # matrix exponential
     return rotation_matrix
 
-    
+
+
+def rotate_trajectory(d, theta, axis):
+    """
+    Rotates the trajectory data around the given axis by the given angle.
+
+    Parameters:
+    -----------
+    d: pandas DataFrame
+        The trajectory data with columns "x y z vx vy vz".
+    theta: float
+        The rotation angle in radians.
+    axis: 1D array-like
+        The rotation axis represented as a 3D vector.
+
+    Returns:
+    --------
+    d_rot: pandas DataFrame
+        The rotated trajectory data with columns "x y z vx vy vz".
+    """
+    d_rot = d.copy()
+    Rt = RotationMatrix(axis, theta)
+    d_rot["x y z".split()]    = np.array([np.dot(Rt, xyz) for xyz in d["x y z".split()].values])
+    d_rot["vx vy vz".split()] = np.array([np.dot(Rt, xyz) for xyz in d["vx vy vz".split()].values])
+    return d_rot
