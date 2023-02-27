@@ -1,42 +1,43 @@
-Editable install from local folder
+# Gravitools
 
-pip install -e .
+This A collection of tools to analyze star cluster simulations
 
-
-
-
-This Package is a simple example to illustrate how to create a python package.
-(see https://medium.com/analytics-vidhya/how-to-create-a-python-library-7d5aea80cc3f )
-
-1) prerequisites
-
-pip install wheel
-pip install setuptools
-pip install twine
+# Prerequisites
+- Python 3.x
+- NumPy
+- Pandas
+- Numba
+- math
 
 
-2) create a root folder (wat is the name of this folder? )
+# Installation
+Clone the repository: 
 
-3) content
+> git clone https://github.com/FrancescopR/ML_bid_strategy_optimizer.git
 
-- Create an empty file called setup.py
-- reate an empty file called README.md
-- Create a folder called "nameofyourpackage"
-- Create an empty file inside "nameofyourpackage" that is called __init__.py
-- Also, in the same folder, create all your modueles and files .py
-- create a folder tests in your root folder. Inside, create an empty __init__.py file and an empty test\_myfunctions.py
+Install the required packages:
 
 
-4) installing packages for testing
+> pip install -e .
 
-- pip install pytest==4.4.1
-- pip install pytest-runner==4.4
 
-5) Run test 
-- python setup.py pytest
+# Usage
+Usage example on how to compute core radius/density centre of a simulated star cluster:
 
-6) build the library
-- python setup.py bdist\_wheel
+```Python
+import gravitools.starcluster_tools as sct
 
-7) install the library
-- pip install dist/addnumbers-0.1.0-py3-none-any.whl
+Rho, Xc, Vc        = density_center(pos, vel, mass)
+rc, Mc, Rho_c, n_c = sct.core_radius_mass_density(R, M, Rho)
+```
+
+
+
+
+# Data
+
+
+
+# Authors
+
+Francesco P. Rizzuto - Initial work
