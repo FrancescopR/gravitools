@@ -1,6 +1,6 @@
 # Gravitools
 
-This A collection of tools to analyze star cluster simulations
+This  package is a collection of tools to analyze star cluster simulations
 
 # Prerequisites
 - Python 3.x
