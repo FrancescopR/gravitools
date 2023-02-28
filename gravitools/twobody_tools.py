@@ -282,11 +282,11 @@ def keplerian_trajectory(Mtot, peri, ecc, theta):
         eccentricity.
     theta : numpy array/ float
         True anomaly (trajectory sampled from -th0 to +th0).
-    N : integer
-        Number of points sampled
    
     Returns
     -------
+    t : numpy array / flaot
+        t: coordinate.
     x : numpy array / flaot
         x coordinate.
     y : numpy array / flaot
