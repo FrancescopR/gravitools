@@ -20,8 +20,6 @@ def _kinetic_gravitational_potential(M, pos, vel):
 		positions of the N particles (3xN matrix).
 	vel : 3D float arrays
 		velocities of the N particles (3xN matrix)..
-	G : float, optional
-		Gravitational Constant. The default is 0.00430125637339471887.
 
 	Returns
 	-------
@@ -50,12 +48,12 @@ def kinetic_gravitational_potential(M, pos, vel):
     K, U = _kinetic_gravitational_potential(M, pos, vel)
     return K, G*U
 
+
 @nb.jit(nopython=setting.NOPYTHON)
 def ecc_semi_peri_distance_many_(Mb, dR, dV, ecc, semi, peri):
     
     for i in nb.prange(Mb.size):
-        ecc[i], semi[i], peri[i], _ = twobody_tools.ecc_semi_peri_distance(Mb[i], dR[i], dV[i])    
-    
+        ecc[i], semi[i], peri[i], _ = twobody_tools.ecc_semi_peri_distance(Mb[i], dR[i], dV[i])        
 
 
 @nb.jit(nopython=setting.NOPYTHON)
