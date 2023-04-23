@@ -20,6 +20,12 @@ Install the required packages:
 
 > pip install -e .
 
+# Testing
+
+run the following command inside the gravitools repo to start testing  
+
+> pytest
+
 
 # Usage
 Usage example on how to compute core radius/density centre of a simulated star cluster:
