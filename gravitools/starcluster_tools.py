@@ -212,13 +212,13 @@ def dispersion_velocity_profile(R, Vx, Vy, Vz, step=1000):
  
 def mass_and_particle_density(R, M, step = 1000):
 
-    i_sort = np.argsort()
+    i_sort = np.argsort(R)
 
     R = R[i_sort]    
     M = M[i_sort]
 
     r, Rho, Rho_n = [], [], []	   
-    for i in range(0, R.size() - step, step):
+    for i in range(0, R.size - step, step):
         DM = M[i:i+step].sum()
         DN = M[i:i+step].shape[0]
         # Compute the density
